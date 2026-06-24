@@ -5,16 +5,9 @@ const session = require("express-session");
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy;
 const { Pool } = require("pg");
+const authRouter = require("./routes/authRouter");
+const { signUpPost } = require("./controller/authController");
 
-
-
-const pool = new Pool({
-  host: "localhost",
-  user: "madders",
-  database: "Postegres",
-  port: 5432
-
-})
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
@@ -22,22 +15,10 @@ app.set("view engine", "ejs");
 app.use(session({ secret: "cats", resave: false, saveUninitialized: false }));
 app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
+app.use("/", authRouter);
+app.post("/sign-up", signUpPost);
 
 app.get("/", (req, res) => res.render('index'));
-
-app.post('/sign-up', async(req, res) => {
-  try {
-    await pool.query("INSERT INTO users(firstname, secondname, email, password, confirmpassword) VALUES($1, $2, $3, $4, $5)", [
-      req.firstname,
-      req.secondname,
-      req.email,
-      req.password,
-      req.confirmpassword
-    ])
-  } catch(err) {
-    console.error("Something went wrong", err)
-  }
-})
 
 app.listen(3000, (error) => {
   if (error) {
