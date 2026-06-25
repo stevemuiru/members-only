@@ -6,7 +6,8 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy;
 const { Pool } = require("pg");
 const authRouter = require("./routes/authRouter");
-const { signUpPost } = require("./controller/authController");
+const { validateSignUp, signUpPost } = require("./controller/authController");
+
 
 
 app.set("views", path.join(__dirname, "views"));
