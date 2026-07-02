@@ -7,6 +7,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const { Pool } = require("pg");
 const authRouter = require("./routes/authRouter");
 const { validateSignUp, signUpPost } = require("./controller/authController");
+const bcrypt = require("bcrypt")
 
 
 
